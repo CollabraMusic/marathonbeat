@@ -67,7 +67,7 @@ if [[ ${FILEBEAT_EXISTS} != 0 ]]; then
 fi
 
 # Install docker-gen, this will generate the filebeat.yml
-which docker-gen $>/dev/null
+which docker-gen &>/dev/null
 DOCKER_GEN_EXISTS=$?
 if [[ ${DOCKER_GEN_EXISTS} != 0 ]]; then
     install_docker_gen
