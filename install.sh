@@ -116,27 +116,27 @@ output:
   logstash:
     hosts: ["listener.logz.io:5015"]
     tls:
-      certificate_authorities: ["' ${CERTIFICATE_PATH} '"]
+      certificate_authorities: ["'${CERTIFICATE_PATH}'"]
 ' > ${FILEBEAT_TEMPLATE_PATH}
 
 FILEBEAT_CONFIG_PATH=/etc/filebeat/filebeat.yml
 
 
-DOCKER_GEN_SERVICE_PATH=/lib/systemd/system/docker-gen.service
+MARATHONBEAT_SERVICE_PATH=/lib/systemd/system/marathonbeat.service
 echo '
 [Unit]
-Description=A file generator that renders templates using Docker Container meta-data.
+Description=A file generator that renders the filebeat.yml using Docker Container meta-data.
 Documentation=https://github.com/jwilder/docker-gen
 After=network.target docker.socket
 Requires=docker.socket
 
 [Service]
-ExecStart='${DOCKER_GEN_PATH} '-watch' ${FILEBEAT_TEMPLATE_PATH} ${FILEBEAT_CONFIG_PATH} ' -notify restart filebeat
+ExecStart='${DOCKER_GEN_PATH} '-watch  -notify "systemctl restart filebeat"' ${FILEBEAT_TEMPLATE_PATH} ${FILEBEAT_CONFIG_PATH} '
 
 [Install]
 WantedBy=multi-user.target
-' > ${DOCKER_GEN_SERVICE_PATH}
-chmod 664 ${DOCKER_GEN_SERVICE_PATH}
+' > ${MARATHONBEAT_SERVICE_PATH}
+chmod 664 ${MARATHONBEAT_SERVICE_PATH}
 systemctl daemon-reload
-systemctl restart docker-gen.service
-systemctl enable docker-gen.service
+systemctl restart marathonbeat
+systemctl enable marathonbeat
