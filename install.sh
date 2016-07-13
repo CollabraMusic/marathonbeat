@@ -131,11 +131,12 @@ After=network.target docker.socket
 Requires=docker.socket
 
 [Service]
-ExecStart='${DOCKER_GEN_PATH} ${FILEBEAT_TEMPLATE_PATH} ${FILEBEAT_CONFIG_PATH} '-watch -notify restart filebeat
+ExecStart='${DOCKER_GEN_PATH} '-watch -notify restart filebeat' ${FILEBEAT_TEMPLATE_PATH} ${FILEBEAT_CONFIG_PATH} '
 
 [Install]
 WantedBy=multi-user.target
 ' > ${DOCKER_GEN_SERVICE_PATH}
 chmod 664 ${DOCKER_GEN_SERVICE_PATH}
 systemctl daemon-reload
-systemctl start docker-gen.service
+systemctl restart docker-gen.service
+systemctl enable docker-gen.service
