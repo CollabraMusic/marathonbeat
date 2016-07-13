@@ -24,7 +24,7 @@ install_docker_gen()
 {
     local DOCKER_GEN_TAR_PATH=/tmp/docker-gen.tar
 
-    curl -L -o ${DOCKER_GEN_TAR_PATH} https://github.com/jwilder/docker-gen/releases/download/0.7.3/docker-gen-linux-amd64-0.7.3.tar.gz
+    wget https://github.com/jwilder/docker-gen/releases/download/0.7.3/docker-gen-linux-amd64-0.7.3.tar.gz -O ${DOCKER_GEN_TAR_PATH} -nv
     tar xvzf ${DOCKER_GEN_TAR_PATH} -C ${DOCKER_GEN_DIRECTORY}
     chmod +x ${DOCKER_GEN_PATH}
 }
@@ -32,7 +32,7 @@ install_docker_gen()
 install_filebeat()
 {
     local FILEBEAT_DEB_PATH=/tmp/filebeat.deb
-    curl -L -o ${FILEBEAT_DEB_PATH} https://download.elastic.co/beats/filebeat/filebeat_1.2.3_amd64.deb
+    wget https://download.elastic.co/beats/filebeat/filebeat_1.2.3_amd64.deb -O ${FILEBEAT_DEB_PATH}  -nv
     sudo dpkg -i ${FILEBEAT_DEB_PATH}
 }
 
@@ -76,7 +76,7 @@ fi
 # Install the logz.io certificate if it doesn't exist
 CERTIFICATE_PATH=/etc/ssl/certs/COMODORSADomainValidationSecureServerCA.crt
 if [ ! -f ${CERTIFICATE_PATH} ]; then
-    curl -L -o ${CERTIFICATE_PATH} https://raw.githubusercontent.com/cloudflare/cfssl_trust/master/intermediate_ca/COMODORSADomainValidationSecureServerCA.crt
+    wget https://raw.githubusercontent.com/cloudflare/cfssl_trust/master/intermediate_ca/COMODORSADomainValidationSecureServerCA.crt -O ${CERTIFICATE_PATH} -nv
     chmod 777 ${CERTIFICATE_PATH}
 fi
 
