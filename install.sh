@@ -90,24 +90,32 @@ filebeat:
   prospectors:
 {{ range $key, $value := . }}
     # {{ $value.Env.MARATHON_APP_ID }}
-{{ $base_path := (first ( where $value.Mounts "Destination" "/mnt/mesos/sandbox" )).Source }}
+  {{ $basePath := (first ( where $value.Mounts "Destination" "/mnt/mesos/sandbox" )).Source }}
     -
       paths:
-        - {{ $base_path  }}/stdout
+        - {{ $basePath  }}/stdout
       fields:
         app_id: {{ $value.Env.MARATHON_APP_ID }}
         level: info
         logzio_codec: plain
         token: {{ $token }}
+  {{ $documentType := $value.Env.LOG_DOCUMENT_TYPE }}
+  {{ if $documentType }}
+        document_type: {{ $documentType }}
+  {{ end }}
       fields_under_root: true
     -
       paths:
-        - {{ $base_path }}/stderr
+        - {{ $basePath }}/stderr
       fields:
         app_id: {{ $value.Env.MARATHON_APP_ID }}
         level: error
         logzio_codec: plain
         token: {{ $token }}
+  {{ $documentType := $value.Env.LOG_DOCUMENT_TYPE }}
+  {{ if $documentType }}
+        document_type: {{ $documentType }}
+  {{ end }}
       fields_under_root: true
 {{ end }}
   registry_file: /var/lib/filebeat/registry
