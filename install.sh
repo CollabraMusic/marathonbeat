@@ -131,7 +131,7 @@ After=network.target docker.socket
 Requires=docker.socket
 
 [Service]
-ExecStart='${DOCKER_GEN_PATH} '-watch -notify restart filebeat' ${FILEBEAT_TEMPLATE_PATH} ${FILEBEAT_CONFIG_PATH} '
+ExecStart='${DOCKER_GEN_PATH} '-watch' ${FILEBEAT_TEMPLATE_PATH} ${FILEBEAT_CONFIG_PATH} ' -notify restart filebeat
 
 [Install]
 WantedBy=multi-user.target
